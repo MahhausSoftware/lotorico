@@ -25,17 +25,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by josias.soares on 14/12/16.
+ * Created by josias.soares on 15/12/16.
  */
 
-public class LotomaniaFragment extends GenericsFragment {
-    private static final String FRAGMENT_TITLE = "LOTOMANIA";
+public class MegaSenaFragment extends GenericsFragment {
+    private static final String FRAGMENT_TITLE = "Megasena";
 
     private String mUrl;
     private Context mContext;
 
     private GridView mGridviewNumbers;
-    private GridView mGridViewGanhadores;
 
     private ArrayList<String> mNumbers;
     private TextView mTextViewConcurso;
@@ -43,15 +42,19 @@ public class LotomaniaFragment extends GenericsFragment {
     private TextView mTextViewEstimValue;
     private TextView mTextViewAcumDesc;
     private TextView mTextViewAcumValue;
-    private ArrayList<String> mGanhadores;
     private WebView mWebView;
     private String mWinners;
+    private TextView mTextViewAcumFinalDesc;
+    private TextView mTextViewAcumFinalValue;
+    private TextView mTextViewAcumViradaDesc;
+    private TextView mTextViewAcumViradaValue;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_lotomania, container, false);
+        View view = inflater.inflate(R.layout.fragment_megasena, container, false);
         mContext = getActivity();
 
         initComponents(view);
@@ -62,25 +65,22 @@ public class LotomaniaFragment extends GenericsFragment {
         return view;
     }
 
-    public LotomaniaFragment() {
+    public MegaSenaFragment() {
     }
 
     @Override
     void initComponents(View view) {
         mTextViewConcurso = (TextView) view.findViewById(R.id.textViewConcurso);
         mGridviewNumbers = (GridView) view.findViewById(R.id.gridViewResult);
-        //mGridViewGanhadores = (GridView) view.findViewById(R.id.gridViewGanhadores);
         mTextViewEstimDesc = (TextView) view.findViewById(R.id.textViewEstimDesc);
         mTextViewEstimValue = (TextView) view.findViewById(R.id.textViewEstimValue);
         mTextViewAcumDesc = (TextView) view.findViewById(R.id.textViewAcumDesc);
         mTextViewAcumValue = (TextView) view.findViewById(R.id.textViewAcumValue);
         mWebView = (WebView) view.findViewById(R.id.webView);
-
-//        if (ORIENTATION_PORTRAIT == mContext.getResources().getConfiguration().orientation) {
-//            mGridviewNumbers.setNumColumns(5);
-//        } else{
-//            mGridviewNumbers.setNumColumns(10);
-//        }
+        mTextViewAcumFinalDesc = (TextView) view.findViewById(R.id.textViewAcumFinalDesc);
+        mTextViewAcumFinalValue = (TextView) view.findViewById(R.id.textViewAcumFinalValue);
+        mTextViewAcumViradaDesc = (TextView) view.findViewById(R.id.textViewAcumViradaDesc);
+        mTextViewAcumViradaValue = (TextView) view.findViewById(R.id.textViewAcumViradaValue);
     }
 
     @Override
@@ -103,7 +103,6 @@ public class LotomaniaFragment extends GenericsFragment {
         mWebView.setWebViewClient(new WebViewClient());
 
         mWebView.loadData(mWinners.replace("Veja o detalhamento", ""),  "text/html; charset=utf-8",  "utf-8");
-        //mWebView.loadUrl(url);
     }
 
     private class getElementsHTML extends AsyncTask<Void, Integer, Document> {
@@ -134,14 +133,12 @@ public class LotomaniaFragment extends GenericsFragment {
             String epsilon = elementResult.select("p.epsilon").text();
             String description = elementResult.select("p.description").text();
 
-            Elements tabelaResul = elementResult.first().getElementsByClass("simple-table");
-            Elements tbRows = tabelaResul.first().getElementsByTag("tbody").first().children();
+            Elements tabelaResul = elementResult.first().getElementsByClass("numbers");
+            Elements liNumbers = tabelaResul.first().children();
 
             mNumbers = new ArrayList<>();
-            for (Element row : tbRows){
-                for (Element colNumber : row.children()){
-                    mNumbers.add(colNumber.text());
-                }
+            for (Element li : liNumbers){
+                mNumbers.add(li.text());
             }
 
             // ESTIMATIVA PROXIMO CONCURSO
@@ -150,27 +147,34 @@ public class LotomaniaFragment extends GenericsFragment {
             String estimativaValue = eleEstNextResult.getElementsByClass("value").first().text();
 
             // ACUMULADO PROXIMO CONCURSO
-            Element eleEstimNextResult = elementResult.first().getElementsByClass("totals").first().getElementsByTag("p").first();
-            String acumuladoDescription = eleEstimNextResult.getElementsByTag("span").first().text();
-            String acumuladoValue = eleEstimNextResult.getElementsByTag("span").select("span.value").text();
+            Elements eleEstimNextResult = elementResult.first().getElementsByClass("totals").first().children();
+
+            String acumuladoDescription = eleEstimNextResult.get(0).children().get(0).text();
+            String acumuladoValue = eleEstimNextResult.get(0).children().get(1).text();
+
+            String acumuladoFinalDescription = eleEstimNextResult.get(1).children().get(0).text();
+            String acumuladoFinalValue = eleEstimNextResult.get(1).children().get(1).text();
+
+            String acumuladoViradaDescription = eleEstimNextResult.get(2).children().get(0).text();
+            String acumuladoViradaValue = eleEstimNextResult.get(2).children().get(1).text();
 
             // GANHADORES
             mWinners = body.getElementsByClass("related-box").outerHtml();
-//            Elements elementsWinners = body.getElementsByClass("related-box").first().children();
-//            for (int i=0; i < 11; i++){
-//                mGanhadores.add(elementsWinners.get(i).text());
-//            }
-
 
             mTextViewConcurso.setText(numberConcurso);
+
             mTextViewEstimDesc.setText(estimativaDescription);
             mTextViewEstimValue.setText(estimativaValue);
+
             mTextViewAcumDesc.setText(acumuladoDescription);
             mTextViewAcumValue.setText(acumuladoValue);
+            mTextViewAcumFinalDesc.setText(acumuladoFinalDescription);
+            mTextViewAcumFinalValue.setText(acumuladoFinalValue);
+            mTextViewAcumViradaDesc.setText(acumuladoViradaDescription);
+            mTextViewAcumViradaValue.setText(acumuladoViradaValue);
+
             mGridviewNumbers.setAdapter(new ResultAdpater(mContext, mNumbers));
             loadGameUrl();
-            //mGridViewGanhadores.setAdapter(new WinnersAdapter(mContext, mGanhadores));
         }
     }
 }
-

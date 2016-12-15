@@ -1,5 +1,6 @@
 package com.mahhaus.free.lotorico.fragment;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,10 +49,10 @@ public class GamesFragment extends GenericsFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("URL", GameUrlEnum.getGameUrl(position));
 
-                LotomaniaFragment rf = new LotomaniaFragment();
-                rf.setArguments(bundle);
+                Fragment fragment = GameUrlEnum.getFragmentPos(position);
+                fragment.setArguments(bundle);
 
-                setFragment(rf);
+                setFragment(fragment);
             }
         });
     }

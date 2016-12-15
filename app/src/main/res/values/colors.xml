@@ -6,4 +6,12 @@
     <color name="startColor">#a0def5e9</color>
     <color name="endcolor">#a092a69c</color>
     <color name="colorTitle">#de5d2e</color>
+
+    <color name="numbers_megasena">#209869</color>
+    <color name="numbers_federal">#103099</color>
+    <color name="numbers_lotofacil">#930089</color>
+    <color name="numbers_lotogol">#0086B7</color>
+    <color name="numbers_quina">#260085</color>
+    <color name="numbers_timemania">#FFF600</color>
+    <color name="numbers_duplasena">#BF194E</color>
 </resources>

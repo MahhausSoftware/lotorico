@@ -1,6 +1,5 @@
 package com.mahhaus.free.lotorico.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,9 +14,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.mahhaus.free.lotorico.R;
-import com.mahhaus.free.lotorico.adapter.ImageAdapter;
 import com.mahhaus.free.lotorico.adapter.ResultAdpater;
-import com.mahhaus.free.lotorico.adapter.WinnersAdapter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,11 +22,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-
-import static android.R.attr.action;
-import static android.R.attr.id;
 
 /**
  * Created by josias.soares on 14/12/16.
@@ -56,7 +49,7 @@ public class ResultFragment extends GenericsFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_result, container, false);
+        View view = inflater.inflate(R.layout.fragment_lotomania, container, false);
         mContext = getActivity();
 
         initComponents(view);

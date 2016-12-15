@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/startColor"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    >
+
+    <TextView
+        android:id="@+id/textViewConcurso"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:text="1568"
+        android:textSize="18sp"
+        android:textColor="@color/colorTitle"
+        android:gravity="center"
+        />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutNumbers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:background="@drawable/image_button">
+
+        <GridView
+            android:id="@+id/gridViewResult"
+            android:layout_width="match_parent"
+            android:numColumns="5"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+        </GridView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutEstimativa"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.35"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewEstimDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estimativa de prêmio do próximo concurso      01/01/2001"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+
+            />
+
+        <TextView
+            android:id="@+id/textViewEstimValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="R$ 999.999.999,99"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/textViewAcumDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Acumulado próximo concurso"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+
+            />
+
+        <TextView
+            android:id="@+id/textViewAcumValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="R$ 999.999.999,99"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutGanhadores"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.35"
+        android:background="@drawable/linear_ganhadores"
+        android:orientation="vertical">
+
+        <!--<GridView-->
+            <!--android:id="@+id/gridViewGanhadores"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:numColumns="1"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_height="wrap_content">-->
+        <!--</GridView>-->
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>
