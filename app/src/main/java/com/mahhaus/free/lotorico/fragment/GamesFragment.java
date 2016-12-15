@@ -48,7 +48,7 @@ public class GamesFragment extends GenericsFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("URL", GameUrlEnum.getGameUrl(position));
 
-                ResultFragment rf = new ResultFragment();
+                LotomaniaFragment rf = new LotomaniaFragment();
                 rf.setArguments(bundle);
 
                 setFragment(rf);

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.mahhaus.free.lotorico.R;
 import com.mahhaus.free.lotorico.adapter.ImageAdapter;
 import com.mahhaus.free.lotorico.adapter.ResultAdpater;
+import com.mahhaus.free.lotorico.adapter.WinnersAdapter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,6 +28,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static android.R.attr.action;
+import static android.R.attr.id;
+
 /**
  * Created by josias.soares on 14/12/16.
  */
@@ -36,6 +40,7 @@ public class ResultFragment extends GenericsFragment {
     private Context mContext;
 
     private GridView mGridview;
+    private GridView mGridViewGanhadores;
 
     private ArrayList<String> mNumbers;
     private TextView mTextViewConcurso;
@@ -43,6 +48,9 @@ public class ResultFragment extends GenericsFragment {
     private TextView mTextViewEstimValue;
     private TextView mTextViewAcumDesc;
     private TextView mTextViewAcumValue;
+    private ArrayList<String> mGanhadores;
+    private WebView mWebView;
+    private String mWinners;
 
     @Nullable
     @Override
@@ -64,10 +72,12 @@ public class ResultFragment extends GenericsFragment {
     void initComponents(View view) {
         mTextViewConcurso = (TextView) view.findViewById(R.id.textViewConcurso);
         mGridview = (GridView) view.findViewById(R.id.gridViewResult);
+        //mGridViewGanhadores = (GridView) view.findViewById(R.id.gridViewGanhadores);
         mTextViewEstimDesc = (TextView) view.findViewById(R.id.textViewEstimDesc);
         mTextViewEstimValue = (TextView) view.findViewById(R.id.textViewEstimValue);
         mTextViewAcumDesc = (TextView) view.findViewById(R.id.textViewAcumDesc);
         mTextViewAcumValue = (TextView) view.findViewById(R.id.textViewAcumValue);
+        mWebView = (WebView) view.findViewById(R.id.webView);
     }
 
     @Override
@@ -81,17 +91,16 @@ public class ResultFragment extends GenericsFragment {
 
     private void loadGameUrl() {
 
-//        WebSettings ws =  mWebView.getSettings();
-//
-//        ws.setJavaScriptEnabled(true);
-//        ws.setSupportZoom(false);
-//
-//        // Force links and redirects to open in the WebView instead of in a browser
-//        mWebView.setWebViewClient(new WebViewClient());
-//
-//        String strHtml ="";
-//        mWebView.loadDataWithBaseURL(mUrl, strHtml, "text/html", "utf-8", "about:blank");
-//        //mWebView.loadUrl(url);
+        WebSettings ws =  mWebView.getSettings();
+
+        ws.setJavaScriptEnabled(false);
+        ws.setSupportZoom(false);
+
+        // Force links and redirects to open in the WebView instead of in a browser
+        mWebView.setWebViewClient(new WebViewClient());
+
+        mWebView.loadData(mWinners.replace("Veja o detalhamento", ""),  "text/html; charset=utf-8",  "utf-8");
+        //mWebView.loadUrl(url);
     }
 
     private class getElementsHTML extends AsyncTask<Void, Integer, Document> {
@@ -111,6 +120,10 @@ public class ResultFragment extends GenericsFragment {
 
         protected void onPostExecute(Document doc) {
             Element body = doc.body();
+
+
+            // NUMERO DO CONCURSO
+            String numberConcurso = body.getElementsByClass("title-bar").first().children().get(1).children().text();
 
             // CONCURSO ATUAL
             Elements elementResult = body.getElementsByClass("resultado-loteria");
@@ -138,12 +151,22 @@ public class ResultFragment extends GenericsFragment {
             String acumuladoDescription = eleEstimNextResult.getElementsByTag("span").first().text();
             String acumuladoValue = eleEstimNextResult.getElementsByTag("span").select("span.value").text();
 
-            mTextViewConcurso.setText("LOTOMANIA");
+            // GANHADORES
+            mWinners = body.getElementsByClass("related-box").outerHtml();
+//            Elements elementsWinners = body.getElementsByClass("related-box").first().children();
+//            for (int i=0; i < 11; i++){
+//                mGanhadores.add(elementsWinners.get(i).text());
+//            }
+
+
+            mTextViewConcurso.setText(numberConcurso);
             mTextViewEstimDesc.setText(estimativaDescription);
             mTextViewEstimValue.setText(estimativaValue);
             mTextViewAcumDesc.setText(acumuladoDescription);
             mTextViewAcumValue.setText(acumuladoValue);
             mGridview.setAdapter(new ResultAdpater(mContext, mNumbers));
+            loadGameUrl();
+            //mGridViewGanhadores.setAdapter(new WinnersAdapter(mContext, mGanhadores));
         }
     }
 

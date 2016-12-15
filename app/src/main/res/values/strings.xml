@@ -1,3 +1,5 @@
 <resources>
+    <!--BANNER-->
+    <string name="admob_banner_60seg">ca-app-pub-6871832777067841/6781621008</string>
     <string name="app_name">LotoRico</string>
 </resources>
