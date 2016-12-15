@@ -4,30 +4,34 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.mahhaus.free.lotorico.fragment.GamesFragment;
 
 
 public class MainActivity extends AppCompatActivity {
     private AdView mAdView;
-    private FrameLayout mAdFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdFrameLayout = (FrameLayout) findViewById(R.id.admob_60seg);
-        mAdView = new AdView(this);
-        mAdView.setAdUnitId(getString(R.string.admob_banner_60seg));
-        mAdView.setAdSize(AdSize.SMART_BANNER);
-        mAdFrameLayout.addView(mAdView);
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this, getString(R.string.admob_banner_60seg));
 
-        mAdView.loadAd(new AdRequest.Builder().build());
+        mAdView = (AdView) findViewById(R.id.adView_60seg);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        // Start loading the ad in the background.
+        mAdView.loadAd(adRequest);
+
 
         setFragment(new GamesFragment());
     }
